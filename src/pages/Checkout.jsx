@@ -50,13 +50,15 @@ const Checkout = () => {
   }
 
   useEffect(() => {
+    console.log(1)
     if(isSubmit && Object.keys(errors).length === 0) {
         const newOrders = checkout.selectedProducts.map((item) => ({...item, orderId: Math.random().toString(36).substr(2, 9), status: 'shipped', ...formValue}))
         dispatch(orderActions.addOrder(newOrders))
         navigation('/orders') 
-        console.log(123)
     }
+    setIsSubmit(false)
   }, [isSubmit])
+
 
   const handleSubmitCheckout = () => {
     // dispatch(cartActions.clearCart())
@@ -67,9 +69,11 @@ const Checkout = () => {
   const handleSetFormValue = (e) => {
     const {name, value} = e.target
     setFormValue({...formValue, [name]: value})
+    setErrors({})
   }
 
-     
+  const disible = Object.keys(errors).length > 0 ? true : false
+
   return (
     <div >
         <CommonSection title={'Checkout'}/>
@@ -146,13 +150,19 @@ const Checkout = () => {
                             <ButtonWrapper
                                 currency={'USD'}
                                 showSpinner={true}
-                                style={{"layout":"vertical", "z-index": "1!important"}}
+                                style={{"layout":"vertical", "zIndex": "1!important"}}
                                 amount={checkout.totalPayments}
                                 dispatchAction={() => handleSubmitCheckout()}
                             />
                         </PayPalScriptProvider>
                         <div className=" w-full ">
-                            <button onClick={() => handleSubmitCheckout()}  className="w-full p-[14px_10px] rounded-md bg-emerald-500 text-white ">Only cash</button>
+                            <button 
+                                disabled={disible} 
+                                onClick={() => handleSubmitCheckout()}  
+                                className={`${disible ? "opacity-80" : ''} w-full p-[14px_10px] rounded-md bg-emerald-500 text-white `}
+                            >
+                                Only cash
+                            </button>
                         </div>
                     </div>
                 </Col>

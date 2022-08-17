@@ -68,3 +68,7 @@ th {
 td p {
     @apply capitalize text-base font-semibold
 }
+
+#zoid-paypal-buttons-uid_ef7ead1308_mdk6mtq6ndy > iframe.component-frame {
+    z-index: 1!important;
+}

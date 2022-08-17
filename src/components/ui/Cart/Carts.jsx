@@ -10,7 +10,7 @@ const Carts = ({openCart, setOpenCart}) => {
   const {handleQuantity, deleteCart, openCheckout} = cartActions
 
   return (
-    <div className={`fixed top-0 right-0 bottom-0 left-0 bg-rgba_2 z-[9999999]  ${openCart ? 'block': 'hidden'}`}>
+    <div className={`fixed top-0 right-0 bottom-0 left-0 bg-rgba_2 z-[100000000000000]  ${openCart ? 'block': 'hidden'}`}>
       <div className="absolute right-0 top-0 bg-slate-100 md:w-[425px] lg:w-[425px] w-[100%] p-3 h-[100%] shadow-sm border-[1px] border-solid  ">
         <div className="p-2">
                 <RiCloseFill className='w-6 h-6 cursor-pointer' onClick={() => setOpenCart(false)}/>

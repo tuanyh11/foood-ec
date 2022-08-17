@@ -127,10 +127,10 @@ const Cart = () => {
                     </table>
                   </div>
                 </Col>
-                <Col lg={12} className="lg:mt-10">
-                  <div >
+                <Col lg={12} className="mt-10">
+                  <div className="flex justify-center items-center flex-col lg:block">
                     <h1 className="text-lg font-semibold">Total: <span className="text-main text-xl ml-2">${totalPayments}</span></h1>
-                    <div className="mt-2 mb-10">
+                    <div className="mt-2 lg:mb-10">
                         <button onClick={handleConfirmSlected}  className="p-[8px_10px] bg-main text-white rounded-md">Checkout</button>
                     </div>
                   </div>

@@ -5,8 +5,11 @@ import { useOrderSlice } from '../redux/hooks'
 
 const Orders = () => {
 
-  const [orders, orderActions] = useOrderSlice()
-  const showItems = orders.orders
+  const [{orders}, orderActions] = useOrderSlice()
+  const showItems = orders
+
+  console.log(orders)
+
   return (
     <div>
         <CommonSection title={'Checkout'}/>
@@ -17,8 +20,6 @@ const Orders = () => {
                     <table className="w-full border-spacing-y-4 border-separate table-auto" >
                       <thead className="bg-gray-50 shadow-md  border-b-2 border-gray-200">
                         <tr>
-                          <th className="p-2 ">
-                          </th>
                           <th className='p-2 text-lg font-semibold'>Product</th>
                           <th className='p-2 text-lg font-semibold'>Name</th>
                           <th className='p-2 text-lg font-semibold'>Status</th>
@@ -39,13 +40,17 @@ const Orders = () => {
                               </p>
                             </td>
                             <td className="whitespace-nowrap">
-                              <p>
-                                {item.size}
+                              <p 
+                                className={`${item.status === 'pendding' ? 'bg-yellow-200': item.status === 'shipped' ? 'bg-emerald-200 text-gray-600': "bg-gray-200"}
+                                inline p-[4px_6px] rounded-md
+                                `}
+                              >
+                                {item.status}
                               </p>
                             </td>
                             <td className="whitespace-nowrap">
                               <p>
-                                {item.price}
+                                {item.address}
                               </p>
                             </td>
                             <td className="whitespace-nowrap">
