@@ -72,3 +72,7 @@ td p {
 #zoid-paypal-buttons-uid_ef7ead1308_mdk6mtq6ndy > iframe.component-frame {
     z-index: 1!important;
 }
+
+#zoid-paypal-buttons-uid_1fdc99263f_mty6mzk6mda > iframe.component-frame {
+    z-index: 1!important;
+}

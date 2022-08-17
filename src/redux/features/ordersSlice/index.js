@@ -11,7 +11,7 @@ const orderSlice = createSlice({
     reducers: {
         addOrder: (state, action) => {
             state.orders = [...state.orders,...action.payload]
-            console.log(action.payload)
+            
         }
     }
 })

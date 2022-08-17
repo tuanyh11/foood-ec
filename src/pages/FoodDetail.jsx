@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import products from '../assets/data/products'
-import {useParams,  Link} from 'react-router-dom'
+import {useParams,  Link, useNavigate} from 'react-router-dom'
 import {RiCheckboxCircleLine} from 'react-icons/ri'
 import { CardProduct, Comments, CommonSection} from '../components'
 import bannerImg from '../assets/images/img_1.png'
 import Slider from "react-slick"
-import {useCartSlice, useReviewSlice, useAuthSlice} from '../redux/hooks'
+import {useCartSlice, useReviewSlice, useAuthSlice, useCheckoutSlice} from '../redux/hooks'
 import { useDispatch } from "react-redux";
 
 
@@ -18,21 +18,25 @@ const initPreviewData = {
     price: 0
 }
 
+const initError = {type: '', errorMsg: ''}
+
 const FoodDetail = () => {
 
    const param = useParams() 
 
+   const navigation = useNavigate()
+
    const [product, setProduct] = useState();
 
    const [tab, setTab] = useState('dsc');
-
-
+   
+   
 
    const [sameProducts, setSameProducts] = useState([]) 
 
    const [selectSize, setSelectSize] = useState(0)
 
-   const [error, setError] = useState(true)
+   const [error, setError] = useState(initError)
 
    const [previewData, setPreviewData] = useState()
 
@@ -41,13 +45,15 @@ const FoodDetail = () => {
 
 
 //    redux hooks 
-    const dispatch = useDispatch()
+   const dispatch = useDispatch()
 
-    const [user] = useAuthSlice()
+   const [checkout, checkoutActions ] = useCheckoutSlice()
 
-    const cartActions = useCartSlice()[1]
+   const [user] = useAuthSlice()
 
-    const [{comments}, reviewActions] = useReviewSlice()
+   const cartActions = useCartSlice()[1]
+
+   const [{comments}, reviewActions] = useReviewSlice()
 
 
 //    get product
@@ -92,19 +98,30 @@ const FoodDetail = () => {
    }, [comments, product])
 
 
-
 //    slick settings 
 
    
     const RightArrow = (props) => {
         const { className, style, onClick } = props
-        return <div onClick={onClick} style={{...style}} className={`${className} before:text-[36px] before:text-main before:content-['→'] z-8 translate-x-[-300%] translate-y-[-50%] `}/>
+        return (
+            <div 
+                onClick={onClick} 
+                style={{...style}} 
+                className={`${className} before:text-[36px] before:text-main before:content-['→'] z-8 translate-x-[-300%] translate-y-[-50%] `}
+            />
+        )
     }
 
 
     const LeftArrow = (props) => {
         const { className, style, onClick } = props
-        return <div onClick={onClick} style={{...style}} className={`${className} before:text-[36px] before:text-main before:content-['←'] z-8   translate-x-[225%] translate-y-[-50%] `}/>
+        return (
+            <div 
+                onClick={onClick} 
+                style={{...style}} 
+                className={`${className} before:text-[36px] before:text-main before:content-['←'] z-8   translate-x-[225%] translate-y-[-50%] `}
+            />
+        )
     }
 
 
@@ -155,14 +172,22 @@ const FoodDetail = () => {
 //   set perviewProduct 
 
     const handleQuantity = (action) => {
-        if(action === 'decr' && previewData.quantity !== 1) setPreviewData(pre => ({...pre, quantity: Number(pre.quantity) > 1  ? Number(pre.quantity) - 1: 1}))
+        if(action === 'decr' && previewData.quantity !== 1) 
+            setPreviewData(pre => (
+                {...pre, quantity: Number(pre.quantity) > 1  ? Number(pre.quantity) - 1: 1}
+            ))
         else if(previewData.quantity < product.currentQuantity && action === 'incr') {
-            setPreviewData(pre => ({...pre, quantity:  pre.quantity < product.currentQuantity ? Number(pre.quantity) + 1: product.currentQuantity}))
+            setPreviewData(pre => (
+                {...pre, quantity:  pre.quantity < product.currentQuantity ? Number(pre.quantity) + 1: product.currentQuantity}
+            ))
         }
     }
 
     const handleQuantityNumber = (value) => {
-        if(/^[0-9]*$/.test(value)) setPreviewData(pre => ({...pre, quantity:  Number(value) <= product.currentQuantity ? value : product.currentQuantity}))
+        if(/^[0-9]*$/.test(value)) 
+            setPreviewData(pre => (
+                {...pre, quantity:  Number(value) <= product.currentQuantity ? value : product.currentQuantity}
+            ))
         else setPreviewData(pre => ({...pre}))
     }
 
@@ -175,31 +200,44 @@ const FoodDetail = () => {
             setPreviewData(pre => ({...pre, size: value.name, price: value.price}))
             setProduct(pre => ({...pre, price: value.price}))
         }
+        setError(initError)
 
     }
 
+
 //   handle add to cart
 
-  const handleAddtoCart = () => {
+
+  const handleAddtoCart = (type) => {
     const modelProduct = product.size.map((item) => item.name)
-    if(!(product && Array.isArray(product.size) && modelProduct.includes(previewData.size)))
-        setError('Please select item type')
+    if(!(product && Array.isArray(product.size) 
+       && modelProduct.includes(previewData.size)
+    ))
+        setError(pre => ({...pre, type, errorMsg: 'Please select item type'}))
     else {
         const {size, ...newProduct} = product
-        
+
         setPreviewData(pre => ({...pre, product: newProduct, cartId: Date.now()}))
-        setError(false)
+
+        setError({...initError, type})
     }
   }
   
   useEffect(() => {
-    if(!error) {
+    if(error.type === 'addToCart' && !error.errorMsg ) {
         dispatch(cartActions.addToCart(previewData))
         setPreviewData(pre => ({...pre}))
-        setError(true)
+        setError(initError)
         setAddSuccess(true)
+    } 
+
+    if(error.type === 'orderNow' && !error.errorMsg) {
+      dispatch(checkoutActions.addProduct([previewData]))
+      navigation('/checkout')
+      
     }
   }, [error])
+
 
 //   handle add product successfully
   useEffect(() => {
@@ -218,7 +256,8 @@ const FoodDetail = () => {
         {
         addSuccess ? 
         <div className="z-30 bg-gray-600 p-2 flex items-center fixed top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] w-[200px] h-[100px] rounded-md">
-            <RiCheckboxCircleLine className="mr-4 w-[50px] h-[50px] text-main "/>
+            <RiCheckboxCircleLine className="mr-4 w-[50px] h-[50px] text-main "
+        />
             <p className="text-white text-sm">Product added successfully</p> 
         </div>: null
         }
@@ -271,17 +310,27 @@ const FoodDetail = () => {
                                         </div>
                                     </div>
 
-                                    {previewData.quantity === product.currentQuantity ? <p className='text-main text-base normal-case' >{'The quantity you selected has reached the maximum of this product'}</p> : null}
-                                    {typeof error  === 'string' ? <p className='text-main text-base normal-case' >{error}</p> : null}
+                                    {previewData.quantity === product.currentQuantity ? 
+                                        <p className='text-main text-base normal-case' >{'The quantity you selected has reached the maximum of this product'}</p>
+                                        : null
+                                    }
+
+                                    { error.errorMsg ? <p className='text-main text-base normal-case' >{error.errorMsg}</p> : null}
 
                                     <div>
-                                        <button onClick={() => handleAddtoCart()} className="p-[10px] bg-white mr-4 text-emerald-500 rounded-md mt-4 border-[1px] 
-                                        border-solid border-emerald-500 hover:opacity-80 transition"
+                                        <button 
+                                            onClick={() => handleAddtoCart('addToCart')} 
+                                            className="p-[10px] bg-white mr-4 text-emerald-500 rounded-md mt-4 border-[1px] 
+                                            border-solid border-emerald-500 hover:opacity-80 transition"
                                         >
                                             Add to cart
                                         </button>
-                                        <button className="p-[10px] bg-main text-white rounded-md mt-4 border-[1px] 
-                                        border-solid border-main hover:bg-white hover:!text-main transition">
+
+                                        <button 
+                                            className="p-[10px] bg-main text-white rounded-md mt-4 border-[1px] 
+                                            border-solid border-main hover:bg-white hover:!text-main transition"
+                                            onClick={() => handleAddtoCart('orderNow')} 
+                                        >
                                             Order now
                                         </button>
                                     </div>
@@ -298,8 +347,18 @@ const FoodDetail = () => {
                             {/* nav */}
                             <Col lg={12}>
                                 <div className="flex p-[10px_0] bordder shadow-bt">
-                                    <h1 className={`mr-4 text-lg font-bold text-gray-700 cursor-pointer ${tab === 'dsc' ? '!text-main': ''}`} onClick={() => setTab('dsc')}>Description</h1>
-                                    <h1 className={`ml-4 text-lg font-bold text-gray-700 cursor-pointer ${tab === 'rev' ? '!text-main': ''} `} onClick={() => setTab('rev')}>Review</h1>
+                                    <h1 
+                                        className={`mr-4 text-lg font-bold text-gray-700 cursor-pointer ${tab === 'dsc' ? '!text-main': ''}`} 
+                                        onClick={() => setTab('dsc')}
+                                    >
+                                        Description
+                                    </h1>
+                                    <h1 
+                                        className={`ml-4 text-lg font-bold text-gray-700 cursor-pointer ${tab === 'rev' ? '!text-main': ''} `} 
+                                        onClick={() => setTab('rev')}
+                                    >
+                                        Review
+                                    </h1>
                                 </div>     
                             </Col>
                             {/* content */}

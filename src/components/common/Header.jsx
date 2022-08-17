@@ -98,11 +98,12 @@ const Header = () => {
                 }
               </div>  
 
+                {/* mobile */}
               <div className="p-[10px] cursor-pointer relative lg:hidden md:hidden">
                 {
                   isClose ? 
                   <RiMenuLine onClick={() => setIsClose(false)} className="w-5 h-5  text-slate-700"/>:
-                  <RiCloseFill onClick={() => setIsClose(true)} className="absolute right-[10px] top-[0] w-5 h-5 text-cyan-50 cursor-pointer z-10"/>
+                  <RiCloseFill onClick={() => setIsClose(true)} className="absolute right-[10px] top-[0] w-5 h-5 text-cyan-50 cursor-pointer z-[100000000000]"/>
                 }
               </div>
             </div>

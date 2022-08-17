@@ -50,14 +50,17 @@ const Checkout = () => {
   }
 
   useEffect(() => {
-    console.log(1)
     if(isSubmit && Object.keys(errors).length === 0) {
         const newOrders = checkout.selectedProducts.map((item) => ({...item, orderId: Math.random().toString(36).substr(2, 9), status: 'shipped', ...formValue}))
         dispatch(orderActions.addOrder(newOrders))
+        checkout.selectedProducts.forEach((item) => {
+            dispatch(cartActions.deleteCart({cartId: item.cartId}))
+        })
         navigation('/orders') 
     }
     setIsSubmit(false)
   }, [isSubmit])
+
 
 
   const handleSubmitCheckout = () => {
@@ -73,6 +76,7 @@ const Checkout = () => {
   }
 
   const disible = Object.keys(errors).length > 0 ? true : false
+  
 
   return (
     <div >
@@ -135,10 +139,10 @@ const Checkout = () => {
 
                     </div>
                 </Col>
-                <Col lg={5}>
+                <Col lg={5} className="mt-4  lg:!mt-0 ">
                     <div className="bg-rgba_2 p-[30px_20px]">
                         <div className='mb-4 mt-2'>
-                            <h1 className="text-lg font-semibold text-white">Total: <span className="text-main text-xl ml-2">${carts.totalAmount}</span></h1>
+                            <h1 className="text-lg font-semibold text-white">Total: <span className="text-main text-xl ml-2">${checkout.totalPayments}</span></h1>
                         </div>
                         <PayPalScriptProvider
                             options={{
