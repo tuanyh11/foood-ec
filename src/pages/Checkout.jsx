@@ -14,7 +14,7 @@ const Checkout = () => {
   const [openPaypal, setOpenPaypal] = useState(false)
   
   const [carts, cartActions, dispatchCart] = useCartSlice()
-
+     
   return (
     <div >
         <CommonSection title={'Checkout'}/>
