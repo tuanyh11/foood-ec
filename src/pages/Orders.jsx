@@ -6,7 +6,7 @@ import { useOrderSlice } from '../redux/hooks'
 const Orders = () => {
 
   const [orders, orderActions] = useOrderSlice()
-  const showItems = []
+  const showItems = orders.orders
   return (
     <div>
         <CommonSection title={'Checkout'}/>
@@ -21,18 +21,15 @@ const Orders = () => {
                           </th>
                           <th className='p-2 text-lg font-semibold'>Product</th>
                           <th className='p-2 text-lg font-semibold'>Name</th>
-                          <th className='p-2 text-lg font-semibold'>Extras</th>
-                          <th className='p-2 text-lg font-semibold'>Price</th>
+                          <th className='p-2 text-lg font-semibold'>Status</th>
+                          <th className='p-2 text-lg font-semibold'>Address</th>
                           <th className="p-2 text-lg font-semibold text-center">Quantity</th>
                           <th className="p-2 text-lg font-semibold">Total</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {/* {showItems.map((item, i) => (
+                        {showItems.map((item, i) => (
                           <tr key={i} className="hover:bg-slate-200 transition p-2" >
-                            <td className="p-2">
-                              <input  type="checkbox" checked={item?.isChecked || false} name={item.cartId} onChange={handleChecked}/>
-                            </td>
                             <td className="whitespace-nowrap">
                               <img className="w-20 h-20 shadow-md border border-slate-500 rounded-[50%]" src={item.product.imageUrl} alt="" />
                             </td>
@@ -62,7 +59,7 @@ const Orders = () => {
                               </p>
                             </td>
                           </tr>
-                        ))} */}
+                        ))}
                       </tbody>
                     </table>
                   </div>
