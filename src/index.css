@@ -7,7 +7,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
- }
+ } 
 
 .text-limit-two {
     overflow: hidden;
@@ -19,7 +19,7 @@
 
 .changed {
     background: red;
-}
+}  
 
 body {
     font-family: 'Nunito', sans-serif;

@@ -14,7 +14,7 @@ module.exports = {
         'top-center': 'top center'
       },
       boxShadow: {
-        'bt': ' rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;'
+        'bt': ' rgba(33, 35, 38, 0.1) 0px 10px 10px -10px'
       },
       height: {
         '100vh': '100vh'
