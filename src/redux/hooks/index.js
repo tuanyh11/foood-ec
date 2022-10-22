@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import {cartActions} from '../features/cartSlice'
 import {reviewActions} from '../features/reviewSlice'
-import {authActions} from '../features/authSlice'
+import {userLogin, userLogout} from '../features/authSlice'
 import {checkoutActions} from '../features/checkoutSlice'
 import {orderActions} from '../features/ordersSlice'
 import {useDispatch } from 'react-redux'
@@ -30,9 +30,9 @@ export const useAuthSlice = () => {
     
     const dispatch = useDispatch()
 
-    const auth = useSelector(state => state.userData.user)
+    const auth = useSelector(state => state.userData.user.data)
 
-    return [auth, authActions, dispatch]
+    return [auth, {userLogin, userLogout}, dispatch]
 }
 
 export const useCheckoutSlice = () => {

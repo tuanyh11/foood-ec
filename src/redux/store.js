@@ -22,7 +22,7 @@ const persistConfig = {
     version: 1,
     storage,
 }
-  
+
 const rootReducer = combineReducers({user: authSlice, cart: cartSlice}) 
 const persistedReducer = persistReducer(persistConfig, rootReducer) 
   

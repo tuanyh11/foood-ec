@@ -32,6 +32,7 @@ const Header = () => {
   const [user] = useAuthSlice()
   // cart hooks 
 
+
   const [cart] = useCartSlice()
 
   const [isClose, setIsClose] = useState(true)
@@ -96,7 +97,9 @@ const Header = () => {
                   <img className="w-8 h-8 object-cover rounded-[50%] border border-gray-500 shadow-md" src={user.userInfo.avatar} alt="" /> 
                   : <RiUser3Line className="w-5 h-5  text-slate-700"/>
                 }
+                
               </div>  
+
 
                 {/* mobile */}
               <div className="p-[10px] cursor-pointer relative lg:hidden md:hidden">

@@ -395,7 +395,7 @@ const FoodDetail = () => {
                                     {
                                         sameProducts.map((product) => (
                                             <div key={product.id} className="p-2">
-                                                <Link to={`/fooddetail/${product.id}`}>
+                                                <Link to={`/foods/${product.id}`}>
                                                     <CardProduct  data={product}/>
                                                 </Link>
                                             </div>
