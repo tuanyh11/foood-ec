@@ -54,9 +54,9 @@ const Login = ({ login }) => {
 
   return (
     <div className="relative w-full">
-      <div className="absolute top-1/2 left-1/2  translate-y-[20%] -translate-x-1/2">
-        <div className="flex items-center justify-center p-12 shadow-lg">
-          <div className="mx-auto w-[550px]">
+      <div className="absolute top-1/2 left-1/2 w-full md:w-auto translate-y-[20%] -translate-x-1/2">
+        <div className="flex items-center  justify-center p-12 shadow-lg">
+          <div className="mx-auto  md:w-[550px]">
             <div className="py-10 text-4xl">Login</div>
             <form onSubmit={handleSubmit(handleOnSubmit)}>
               <div className="mb-5">
@@ -136,7 +136,7 @@ const Login = ({ login }) => {
                   Login
                 </button>
               </div>
-              <div className="hover:shadow-form hover:text-main mt-8 flex gap-4 justify-between ">
+              <div className="hover:shadow-form hover:text-main mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 justify-between ">
                 <Link to={"/register"}>
                   don't have acount?{" "}
                   <span className="font-bold">Go to Register </span>

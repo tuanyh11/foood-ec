@@ -45,7 +45,7 @@ const Register = ({registerToLocal}) => {
   return (
     <div className="relative">
       <div>
-        <div className="flex items-center justify-center p-12">
+        <div className="flex items-center w-full justify-center md:p-12">
           <div className="mx-auto w-full max-w-[650px] p-10 shadow-lg">
             <div className="py-10 text-4xl">Register</div>
             <form onSubmit={handleSubmit((data) => handleOnSubmit(data))}>
