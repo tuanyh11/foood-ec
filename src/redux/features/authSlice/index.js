@@ -7,7 +7,6 @@ const initialState = {
 }
 
 
-
 const authSlice = createSlice({
     initialState,
     name: 'auth',
@@ -16,11 +15,17 @@ const authSlice = createSlice({
            state.data = action.payload
         },
         userLogout: (state, action) => {
-            localStorage.clear()
+            state.data = null
+        },
+        register: (state, action) => {
+            state.data = action.payload
+        },
+        updateUser: (state, action) => {
+            state.data = {...state.data, ...action.payload}
         }
     }
 })
 
-export const {userLogin, userLogout} = authSlice.actions
+export const {userLogin, userLogout, register, updateUser} = authSlice.actions
 
 export default authSlice.reducer

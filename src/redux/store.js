@@ -23,7 +23,7 @@ const persistConfig = {
     storage,
 }
 
-const rootReducer = combineReducers({user: authSlice, cart: cartSlice}) 
+const rootReducer = combineReducers({user: authSlice, cart: cartSlice, checkout: checkoutSlice}) 
 const persistedReducer = persistReducer(persistConfig, rootReducer) 
   
 

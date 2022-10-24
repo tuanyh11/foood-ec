@@ -372,7 +372,7 @@ const FoodDetail = () => {
                                 <Col lg={6} className="">
                                     {/* comment tab */}
                                     <div  className="p-[30px_0]">
-                                        <Comments userInfo={user.userInfo}/>
+                                        <Comments userInfo={user?.userInfo}/>
                                     </div>
                                 </Col>
                             }

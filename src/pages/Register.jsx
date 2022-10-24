@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { connect } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { registerApi } from "../assets/Api";
+import { register } from "../redux/features/authSlice";
 
-const Register = () => {
+const Register = ({registerToLocal}) => {
   const {
     register,
     formState: { errors },
@@ -16,8 +20,24 @@ const Register = () => {
     },
   });
 
-  const handleOnSubmit = (data) => {
-    console.log(data);
+  const [showPass, setShowPass] = useState(false);
+
+  const nav = useNavigate()
+
+  const handleOnSubmit = async (data) => {
+    
+    try {
+      const user = await registerApi(data)
+      
+      registerToLocal(user.data.data)
+
+      nav('/verify_code')
+      
+    } catch (error) {
+
+      alert(error?.response?.data?.message)
+    }
+
   };
 
   console.log(errors);
@@ -26,8 +46,9 @@ const Register = () => {
     <div className="relative">
       <div>
         <div className="flex items-center justify-center p-12">
-          <div className="mx-auto w-full max-w-[550px]">
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <div className="mx-auto w-full max-w-[650px] p-10 shadow-lg">
+            <div className="py-10 text-4xl">Register</div>
+            <form onSubmit={handleSubmit((data) => handleOnSubmit(data))}>
               <div className="mb-5">
                 <span className="mb-3 block text-base font-medium text-[#07074D]">
                   Email
@@ -98,7 +119,7 @@ const Register = () => {
                   </div>
                 )}
                 <input
-                  type="password"
+                  type={`${!showPass ? "password" : "text"}`}
                   {...register("password", {
                     required: {
                       value: true,
@@ -124,7 +145,7 @@ const Register = () => {
                   </div>
                 )}
                 <input
-                  type="password"
+                  type={`${!showPass ? "password" : "text"}`}
                   {...register("passwordConfirm", {
                     validate: value => value === watch("password") || "The passwords do not match",
                 
@@ -133,7 +154,20 @@ const Register = () => {
                   className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
               </div>
-
+              <div
+              className=" pb-8 flex items-center gap-2"
+              onClick={() => setShowPass((pre) => !pre)}
+            >
+              <input
+                type="checkbox"
+                checked={showPass}
+                onChange={() => {}}
+                name=""
+              />
+              <label className="cursor-pointer hover:text-main">
+                show passwords
+              </label>
+            </div>
 
               <div>
                 <button
@@ -143,6 +177,9 @@ const Register = () => {
                   Register
                 </button>
               </div>
+              <div className="hover:shadow-form hover:text-main mt-8 ">
+                <Link to={"/login"}>Aready have acount ? <span className="font-bold">Go to Login</span> </Link>
+              </div>
             </form>
           </div>
         </div>
@@ -151,4 +188,12 @@ const Register = () => {
   );
 };
 
-export default Register;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      registerToLocal: (data) => dispatch(register(data))
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(Register);

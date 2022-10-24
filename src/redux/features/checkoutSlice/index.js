@@ -14,6 +14,10 @@ const checkoutSlice = createSlice({
         addProduct: (state, action) => {
             state.selectedProducts = action.payload
             state.totalPayments = state.selectedProducts.reduce((a, b) =>  a + Number(b.price) * Number(b.quantity), 0)
+        },
+        clearProduct: (state, action) => {
+            state.selectedProducts = []
+            state.totalPayments = 0
         }
     }
 })
