@@ -13,7 +13,7 @@ const VerifyCode = () => {
         defaultValues: {
           code: ""
         },
-      });
+      }); 
 
       const [user] = useAuthSlice()
 
