@@ -22,7 +22,7 @@ const VerifyCode = () => {
       const handleOnSubmit = async (data) => {
         try {
           const newUser = await checkCode({email: user?.email, code: data.code, id: user?._id})
-          nav("/")
+          nav("/login")
         } catch (error) {
           alert(error?.response?.data?.message)
         }

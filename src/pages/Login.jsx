@@ -28,18 +28,18 @@ const Login = ({ login }) => {
   const handleOnSubmit = async (data) => {
     try {
       const user = await loginApi(data);
-      if (user.data.data?.verified) {
-        login(user.data.data);
+      if (user.data?.data?.verified) {
+        login(user?.data?.data);
         return nav("/");
       }
       login(user?.data?.data);
 
-      nav("/verify-code", { state: user.data.data });
+      nav("/verify-code", { state: user?.data?.data });
     } catch (error) {
       console.log(error);
       if (error?.response?.data)
         return setError(error?.response?.data?.message);
-      setError(error);
+      setError(error?.message);
     }
   };
 

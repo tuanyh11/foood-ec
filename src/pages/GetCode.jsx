@@ -22,8 +22,6 @@ const GetCode = () => {
   const handleOnSubmit = async (data) => {
     try {
       const newCode = await getNewCode({ email: user?.email, id: user?._id });
-      
-      console.log(newCode)
       alert(newCode.data?.message)
       nav("/verify_code")
     } catch (error) {
