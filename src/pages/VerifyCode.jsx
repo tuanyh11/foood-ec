@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkCode } from "../assets/Api";
 import { useAuthSlice } from "../redux/hooks";
 
@@ -41,7 +41,7 @@ const VerifyCode = () => {
                 className="p-2 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
                 role="alert"
               >
-                <span className="font-medium">Alert!</span> {errors.email.message}
+                <span className="font-medium">Alert!</span> {errors?.email?.message}
               </div>
             )}
             <input
@@ -64,11 +64,12 @@ const VerifyCode = () => {
             >
               Send
             </button>
-            <button
-              className="hover:!text-main   py-3 "
+            <Link
+              to="/get_code"
+              className="hover:!text-main block  py-3 "
             >
               Code exprired get new code?
-            </button>
+            </Link>
           </div>
         </form>
       </div>

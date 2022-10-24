@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
@@ -21,6 +22,7 @@ const Login = ({ login }) => {
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
 
+
   const nav = useNavigate();
 
   const handleOnSubmit = async (data) => {
@@ -40,6 +42,15 @@ const Login = ({ login }) => {
       setError(error);
     }
   };
+
+  useEffect(() => {
+    if(error) {
+      var id = setTimeout(() => {
+        setError(null)
+      }, 4000)
+    }
+    return () => clearTimeout(id)
+  }, [error])
 
   return (
     <div className="relative w-full">
@@ -125,12 +136,17 @@ const Login = ({ login }) => {
                   Login
                 </button>
               </div>
-              <div className="hover:shadow-form hover:text-main mt-8 ">
+              <div className="hover:shadow-form hover:text-main mt-8 flex gap-4 justify-between ">
                 <Link to={"/register"}>
                   don't have acount?{" "}
                   <span className="font-bold">Go to Register </span>
                 </Link>
+                <Link to={"/verify_code"}>
+                  Verify your code{" "}
+                  <span className="font-bold">Verify Code </span>
+                </Link>
               </div>
+
             </form>
             {error && (
               <div
