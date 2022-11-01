@@ -41,3 +41,35 @@ export const uploadSigleImage = (data) => {
 export const delImage = (id) => {
    return API.delete('/upload/delete_image/'+id)
 }
+
+
+// cart
+
+export const getCartByUserId = () => API.get('cart')
+
+export const updateCartItem = (data) => API.put('cart', data)
+
+export const checkAllItem = (data) => API.put('cart/check_all', data)
+
+export const AddItemToCart = (data) => API.post('cart', data)
+
+export const delItemCart = (id) => API.delete('cart/'+id)
+
+
+// product
+
+export const getProductsApi = () => API.get('product')
+export const getProductByIdApi = (id, query) => API.get(`product/${id}?page=${query?.page || 1}`)
+
+
+// order 
+
+export const getOrder = () => API.get('order')
+
+// comment 
+
+export const createComment   = (id,data) => API.post('comment/'+id, data)
+
+export const deleteComment   = (data) => API.put('comment/', data)
+
+export const updateCommentApi   = (data) => API.put('comment/update', data)

@@ -8,11 +8,12 @@ export const publicRoutes = [
     {path: "/home", component: Home, layout: DefaultLayout},
     {path: "/foods", component: AllFoods, layout: DefaultLayout},
     {path: "/cart", component: Cart, layout: DefaultLayout},
-    {path: "/checkout", component: Checkout, layout: DefaultLayout},
     {path: "/orders", component: Orders, layout: DefaultLayout},
 ] 
 
 export const privateRoutes = [
     {path: "/user_profile", component: UserProfile, layout: DefaultLayout},
     {path: "/setting", component: SettingProfile, layout: DefaultLayout},
+    
+    {path: "/checkout", component: Checkout, layout: DefaultLayout},
 ]

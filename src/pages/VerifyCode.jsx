@@ -28,8 +28,8 @@ const VerifyCode = () => {
         }
       };
   return (
-    <div className="relative h-[100vh]">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg p-10">
+    <div className="relative h-[100vh] w-full bg-no-repeat pt-[100vh] bg-cover" style={{backgroundImage: `url(${'https://cdn.shopify.com/s/files/1/0045/4967/3089/articles/10_Iconic_Prohibition-Era_Cocktails__Drink_Like_It_s_the_1920s_1000x.jpg?v=1599262640'})`}}>
+      <div className="bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg p-10">
 
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <div className="mb-3 ">

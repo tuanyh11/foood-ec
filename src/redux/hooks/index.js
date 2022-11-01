@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import {cartActions} from '../features/cartSlice'
-import {reviewActions} from '../features/reviewSlice'
+import {commentActions} from '../features/reviewSlice'
 import {userLogin, userLogout} from '../features/authSlice'
 import {checkoutActions} from '../features/checkoutSlice'
 import {orderActions} from '../features/ordersSlice'
@@ -19,11 +19,11 @@ export const useCartSlice = () => {
     return [cartProducts, cartActions, dispatch]
 }
 
-export const useReviewSlice = () => {
+export const useCommentSlice = () => {
 
-    const reviewProducts = useSelector(state => state.reviews)
+    const commentProducts = useSelector(state => state.comment)
 
-    return [reviewProducts, reviewActions]
+    return [commentProducts, commentActions]
 
 }
 

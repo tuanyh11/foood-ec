@@ -43,10 +43,10 @@ const Register = ({registerToLocal}) => {
   console.log(errors);
 
   return (
-    <div className="relative">
+    <div  className="relative w-full bg-no-repeat pt-[100vh] bg-cover " style={{backgroundImage: `url(${'https://cdn3.vectorstock.com/i/1000x1000/98/47/background-frame-with-fast-food-and-dessert-vector-20829847.jpg'})`}}>
       <div>
-        <div className="flex items-center w-full justify-center md:p-12">
-          <div className="mx-auto w-full max-w-[650px] p-10 shadow-lg">
+        <div className="bg-white p-10 rounded-md shadow-lg absolute top-1/2 left-1/2  w-full md:w-auto -translate-y-[50%] -translate-x-1/2 z-[999999]">
+          <div className=" w-full mx-auto  md:w-[550px]  ">
             <div className="py-10 text-4xl">Register</div>
             <form onSubmit={handleSubmit((data) => handleOnSubmit(data))}>
               <div className="mb-5">

@@ -1,4 +1,8 @@
 import {useState} from 'react'
+import { RiUser3Line } from 'react-icons/ri'
+import { useNavigate } from 'react-router-dom'
+import { IMG_URL } from '../../../assets/Api'
+import { useAuthSlice } from '../../../redux/hooks'
 
 const CommentForm = ({
     submitLabel, 
@@ -9,27 +13,37 @@ const CommentForm = ({
     },
     initialText = '',
     handleCancel = false,
-    avatarUser=''
+    avatar=''
 }) => {
 
+    const nav = useNavigate()
+    const [user] = useAuthSlice()
     const [text, setText] = useState(initialText)
 
     const onSubmit = (e) => {
-        e.preventDefault()
-        handleSubmit(text)
-        setText('')
-        handleCancel && handleCancel()
+        if(user?.token) {
+            e.preventDefault()
+            handleSubmit(text)
+            setText('')
+            handleCancel && handleCancel()
+        } else nav("/login")
+
     }
+
 
   return (
     <form className={`flex items-center mt-2  lg:w-full  ${style.form}`} onSubmit={onSubmit}>
-        {avatarUser && 
-            (
-                <div className="mr-4 flex-shrink-0">
-                    <img className="w-10 h-10 rounded-full object-cover border-[1px] border-solid border-gray-200" src={ avatarUser} alt="" />
-                </div>
-            )
-        }
+          {avatar ? (
+            <img
+              className={`first-line:rounded-full w-16  h-16 rounded-full object-cover border-[1px] border-solid border-gray-200 shadow-md`}
+              src={IMG_URL + avatar}
+              alt=""
+            />
+          ) : (
+            <div className="rounded-full shadow-lg p-3">
+                <RiUser3Line className="w-8 h-8   text-slate-700" />
+            </div>
+          )}
         <div className="w-full p-2 " >
             <input 
                 placeholder="Your comment...." 
@@ -55,6 +69,7 @@ const CommentForm = ({
                     }
             
                     <button 
+
                         disabled={text.length === 0}
                         className={`p-2 text-xs font-bold text-white uppercase bg-emerald-400 rounded-sm ${!text && 'opacity-50 cursor-not-allowed'}`}
                     >

@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkCode, getNewCode } from "../assets/Api";
 import { useAuthSlice } from "../redux/hooks";
 
@@ -29,8 +29,8 @@ const GetCode = () => {
     }
   };
   return (
-    <div className="relative h-[100vh]">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg p-10">
+    <div className="relative h-[100vh] w-full bg-center bg-no-repeat pt-[100vh] bg-cover" style={{backgroundImage: `url(${'https://images.unsplash.com/photo-1607013251379-e6eecfffe234?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'})`}}>
+      <div className="absolute top-1/2 bg-white left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg p-10 rounded-md">
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <div className="mb-5">
             <span className="mb-3 block text-base font-medium text-[#07074D]">
@@ -62,13 +62,18 @@ const GetCode = () => {
             />
           </div>
 
-          <div>
+          <div className="flex items-center gap-4 ">
             <button
               type="submit"
               className="hover:shadow-form rounded-md !bg-main !py-3 px-8 text-base font-semibold text-white outline-none"
             >
               Send
             </button>
+            <Link to={"/login"}>
+                    go to {" "}
+                  <span className="font-bold text-xl">Login </span>
+            </Link>
+
           </div>
         </form>
       </div>

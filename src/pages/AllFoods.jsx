@@ -5,6 +5,7 @@ import { Container, Row, Col} from 'reactstrap'
 import products from '../assets/data/products'
 import {Link} from 'react-router-dom'
 import {RiSearchLine, RiArrowDownSLine, RiCheckFill} from 'react-icons/ri'
+import { getProductsApi } from '../assets/Api'
 
 const options = ['All', 'Alphabetically A-Z', 'Alphabetically Z-A', 'High price', 'Low price']
 
@@ -22,9 +23,17 @@ const AllFoods = () => {
    
   const limitProduct = 8
 
+  const getProducts = async function () {
+    try {
+      const {data} = await getProductsApi()
+      setProduct(data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
-    setProduct(products)
+    getProducts()
   }, [])
 
   useEffect(() => {
@@ -67,6 +76,8 @@ const AllFoods = () => {
         break;
     }
   }
+
+
   
   return (
     <div>
@@ -119,8 +130,8 @@ const AllFoods = () => {
                 </div>
               </Col>
               {displayProducts.map((product) => 
-                (<Col sm={6}  md={4} lg={3} key={product.id} className="mt-4"> 
-                  <Link to={`/foods/${product.id}`}>
+                (<Col sm={6}  md={4} lg={3} key={product._id} className="mt-4"> 
+                  <Link to={`/foods/${product._id}`}>
                     <CardProduct data={product}/>
                   </Link>
                 </Col>)

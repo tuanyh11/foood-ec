@@ -2,17 +2,17 @@ import {useState, useEffect} from 'react'
 import {RiCloseFill, RiAddFill, RiSubtractFill} from 'react-icons/ri'
 import { useDispatch } from 'react-redux'
 import {ConfirmBox} from '../../'
+import { IMG_URL, updateCartItem, delItemCart } from '../../../assets/Api'
 
 
 const CartItem = ({data, handleQuantity, deleteCart}) => {
-  const {imageUrl, price, name, currency, currentQuantity} = data.product
 
   const dispatch = useDispatch()
 
-  const {quantity, size} = data
+  const {availableQty, size, quantity} = data
 
 
-  const [inputQuantity, setInputQuantity] = useState(quantity)
+  const [inputQuantity, setInputQuantity] = useState(0)
 
   const [showConfirmBox, setShowConfirmBox] = useState(false)
 
@@ -20,35 +20,57 @@ const CartItem = ({data, handleQuantity, deleteCart}) => {
     setInputQuantity(quantity)
   }, [quantity])
 
+
   const handleNumberQuantity = (e) => {
-    if(/^[0-9]*$/.test(e.target.value) && e.target.value <= currentQuantity) setInputQuantity(e.target.value)
+    const quantity = Number(e.target.value)
+    if(!/^[0-9]*$/.test(e.target.value)) return alert("Product quantity must be a number")
+    if(quantity <= availableQty) 
+     setInputQuantity(quantity)
     else {
-      setInputQuantity(inputQuantity)
+      setInputQuantity(availableQty)
       alert('The quantity you selected has reached the maximum of this product')
+    }
+  }
+
+  const updateQuantity = async function(quantity) {
+    try {
+      await updateCartItem({...data, quantity: quantity})
+    } catch (error) {
+      console.log(error)
     }
   }
 
   const decQuantity = () => {
-    setInputQuantity(pre => pre - 1 === 0 ? pre : pre - 1)
+    setInputQuantity(pre => pre - 1 === 0 ? 1 : pre - 1)
     const value =  inputQuantity - 1 === 0 ? 0 : inputQuantity - 1
     if(value === 0) setShowConfirmBox(true)
-    else dispatch(handleQuantity({cartId: data.cartId, quantity: value}))
+    else updateQuantity(value)
     
   }
+
 
   const incQuantity = () => {
 
     const value =  inputQuantity + 1
-    if(value > currentQuantity) {
+    if(value > availableQty) {
       alert('The quantity you selected has reached the maximum of this product')
     } else {
-      dispatch(handleQuantity({cartId: data.cartId, quantity: value}))   
+      updateQuantity(value)
       setInputQuantity(pre => pre + 1)
     }
   }
 
+  const delProductItem = async () => {
+    try {
+      await delItemCart( data?._id)
+      dispatch(deleteCart({_id: data?._id}))
+    } catch (error) {
+      
+    }
+  }
+
   const handleAccept = () => {
-    dispatch(deleteCart({cartId: data.cartId}))
+    delProductItem()
     setShowConfirmBox(false)
   }
 
@@ -74,13 +96,13 @@ const CartItem = ({data, handleQuantity, deleteCart}) => {
 
 
       <div className="flex border border-solid shadow-sm rounded lg:hover:bg-white transition  gap-4  items-center w-full">
-        <img className="w-12 h-12 m-[0_10px]" src={imageUrl} alt="" />
+        <img className="w-12 h-12 m-[0_10px]" src={IMG_URL+data?.image} alt="" />
         {/* content */}
         <div className="flex gap-4 flex-[1] "> 
             <div className="">
-              <h2 className="text-xl font-extrabold text-slate-800 capitalize limit" >{name}</h2>
+              <h2 className="text-xl font-extrabold text-slate-800 capitalize limit" >{data?.name}</h2>
               <div className="flex items-center gap-2">
-                <p className=" text-sm font-bold">{quantity}x <span className="text-base text-main ml-1">{price + currency}</span></p>
+                <p className=" text-sm font-bold">{quantity}x <span className="text-base text-main ml-1">{data?.price}</span></p>
                 <p className="capitalize  text-base font-bold text-emerald-500">{size}</p>
               </div>
               {/* warning */}

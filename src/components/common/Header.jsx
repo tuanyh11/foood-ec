@@ -10,7 +10,8 @@ import {
 } from "react-icons/ri";
 import { useCartSlice, useAuthSlice } from "../../redux/hooks";
 import { Carts } from "../index";
-import { URL_API } from "../../assets/Api";
+import { getCartByUserId, URL_API } from "../../assets/Api";
+import { useEffect } from "react";
 
 const navs = [
   {
@@ -37,12 +38,22 @@ const Header = () => {
   const [user, {userLogout}, dispatch] = useAuthSlice();
 
 
-  const [cart] = useCartSlice();
+  const [cart, {addToCart}] = useCartSlice();
 
   const [isClose, setIsClose] = useState(true);
 
   const [openCart, setOpenCart] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
+  useEffect(() => {
+    (async() => {
+      try {
+        const {data} = await getCartByUserId()
+        dispatch(addToCart(data?.data.products))
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+  }, [])
 
   return (
     <div className="fixed top-0 right-0 left-0 shadow-sm bg-white z-10">
@@ -153,12 +164,12 @@ const Header = () => {
                       </Link>
                     </li>
                     <li>
-                      <button
+                      <Link to={'/login'}
                         onClick={() => dispatch(userLogout())}
                         className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Logout
-                      </button>
+                      </Link>
                     </li>
                   </ul>
                 </div>

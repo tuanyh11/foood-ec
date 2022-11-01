@@ -30,9 +30,9 @@ const Carts = ({openCart, setOpenCart}) => {
               {/* cart item */}
               <div className="mt-10 max-h-[calc(100vh-250px)] lg:max-h-[calc(100vh-180px)] overflow-y-scroll">
                 {
-                  carts.products.map((product) => (
+                  carts?.products.map((product) => (
                     <CartItem 
-                      key={product.cartId} 
+                      key={product._id} 
                       data={product} 
                       handleQuantity={handleQuantity}
                       deleteCart={deleteCart}

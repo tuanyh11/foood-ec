@@ -26,11 +26,6 @@ const categories = [
       name: 'ice cream',
       image: category_4
     },
-    {
-      id: Math.random(),
-      name: 'hoot dog',
-      image: category_5
-    }
   ]
 
   export default categories

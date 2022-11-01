@@ -4,7 +4,7 @@ import {RiArrowLeftSFill, RiArrowRightSFill} from 'react-icons/ri'
 const Pagination = ({
   handleSetPage = () => {}, 
   lengthItems, 
-  limitPage = 5,
+  limitPage = 10,
   limit,
   currentPage, 
   setCurrentPage,
@@ -20,7 +20,9 @@ const Pagination = ({
 
   for (let i = 1; i < Math.ceil(lengthItems / limit) + 1; i++) {
     range.push(i)
-  }
+  } 
+
+  console.log(range)
 
   const handleSelectPage = (page) => {
     handleSetPage(page)
@@ -50,7 +52,6 @@ const Pagination = ({
 
   const handlePrePage = () => {
     handleSelectPage(currentPage > 1 ? currentPage - 1 : 1)
-    console.log((currentPage - 1), minPage)
     if((currentPage - 1) % minPage === 0) {
       setMaxPage(pre => pre - limitPage)
       setMinPage(pre => pre - limitPage)

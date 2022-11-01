@@ -10,10 +10,8 @@ import { createOrder, getPayment } from "../assets/Api";
 
 
 
-const Checkout = () => {
+const Checkout = ({products, totalPayments}) => {
   const navigation = useNavigate();
-
-  const [checkout, checkoutActions] = useCheckoutSlice();
 
   const [orders, orderActions] = useOrderSlice();
 
@@ -40,10 +38,9 @@ const Checkout = () => {
 
   const payWithCart = async (token) => {
     try {
-      const res = await getPayment({tokenId: token.id, amount: checkout.totalPayments})
+      const res = await getPayment({tokenId: token.id, amount: totalPayments})
       const {billing_details, amount, payment_method_details} = res.data
-      await createOrder({products: checkout?.selectedProducts, address: billing_details?.address, amount, payment: payment_method_details?.card})
-      dispatch(checkoutActions.clearProduct())
+      await createOrder({products: products, address: billing_details?.address, amount, payment: payment_method_details?.card})
       window.confirm("Success payment")
       navigation('/orders')
     } catch (error) {
@@ -56,12 +53,10 @@ const Checkout = () => {
 
   const handleOnSubmit = () => {};
 
-  console.log(checkout.selectedProducts, carts)
 
   return (
     <div>
-      <CommonSection title={"Checkout"} />
-      {checkout.totalPayments === 0 ? 
+      {totalPayments === 0 ? 
       
         <div className="flex justify-center mt-10 gap-2 text-lg">
           <div className=""> &#128577; You don't have product to check out continute with {" "} </div>
@@ -177,7 +172,7 @@ const Checkout = () => {
                 <h1 className="text-lg font-semibold text-white">
                   Total:{" "}
                   <span className="text-main text-xl ml-2">
-                    ${checkout.totalPayments}
+                    ${totalPayments}
                   </span>
                 </h1>
               </div>
@@ -187,7 +182,7 @@ const Checkout = () => {
                 billingAddress
                 shippingAddress
                 stripeKey="pk_test_51KhkygGTaC45i0Au8Rf07bUPrRtBLGgDLLH2XzsmnlBDXElzoWUjDkvIVqrOV8MujTxcznfV0rs32At6bJPKygpr00n4spZxrO"
-                amount={checkout.totalPayments * 100}
+                amount={totalPayments * 100}
               >
                 <button
                   type="button"

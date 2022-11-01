@@ -1,4 +1,4 @@
-import { createSlice} from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, current} from '@reduxjs/toolkit'
 
 
 const initialState = {
@@ -7,6 +7,8 @@ const initialState = {
     isCheckout: false,
     totalPayment: 0
 }
+
+
 
 const getTotalAmount = (state, action) => {
     state.totalAmount = state.products.reduce((a, b) => {
@@ -19,14 +21,8 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart(state, action) {
-            const exitProduct = state.products.findIndex(cart => cart.size === action.payload.size && action.payload.product.id === cart.product.id)
-            
-            if(exitProduct !== -1) {
-                state.products[exitProduct].quantity =state.products[exitProduct].quantity + action.payload.quantity
-            } else {
-                state.products.push(action.payload)
-            }
-            getTotalAmount(state, action)
+            state.products = action.payload
+            getTotalAmount(state)
         },
         handleQuantity(state, action) {
             state.products.map(cart => {
@@ -40,7 +36,7 @@ const cartSlice = createSlice({
         },
 
         deleteCart(state, action) {
-            state.products = state.products.filter(cart => cart.cartId !== action.payload.cartId)
+            state.products = state.products.filter(product => product._id !== action.payload._id)
             getTotalAmount(state, action)
         },
 
@@ -51,6 +47,10 @@ const cartSlice = createSlice({
         
         openCheckout(state, action) {
             state.isCheckout = action.payload
+        },
+
+        initCart(state, action) {
+            state.products = action.payload.products
         }
     }
 })
