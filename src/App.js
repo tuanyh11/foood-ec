@@ -8,6 +8,7 @@ import {privateRoutes, publicRoutes } from './router'
 import { EmptyLayout, ProtectedRouter } from './components';
 import { GetCode, Login, VerifyCode } from './pages';
 import Register from './pages/Register';
+import jwt_decode from 'jwt-decode'
 
 function App() {
 
@@ -20,8 +21,17 @@ function App() {
 
   const dispatch = useDispatch()
 
-  const [user, authActions] = useAuthSlice()
+  const [user, {userLogout}] = useAuthSlice()
 
+  useEffect(() => {
+    if(user?.token) {
+     const {exp} = jwt_decode(user.token)
+     if(exp * 1000 < new Date().getTime()) {
+      userLogout()
+      window.location.reload()
+     }
+    }
+  }, [])
 
   return (
       <Routes>
