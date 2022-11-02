@@ -21,7 +21,7 @@ const VerifyCode = () => {
     
       const handleOnSubmit = async (data) => {
         try {
-          const newUser = await checkCode({email: user?.email, code: data.code, id: user?._id})
+          const newUser = await checkCode({email: data?.email, code: data.code, id: user?._id})
           nav("/login")
         } catch (error) {
           alert(error?.response?.data?.message)
@@ -44,6 +44,7 @@ const VerifyCode = () => {
                 <span className="font-medium">Alert!</span> {errors?.email?.message}
               </div>
             )}
+            
             <input
               type="text"
               {...register("code", {
@@ -55,6 +56,37 @@ const VerifyCode = () => {
               placeholder="Code"
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
+          </div>
+
+          <div className="mb-3 ">
+            <span className="mb-3 block  font-medium text-[#07074D] text-2xl">
+              Email
+            </span>
+            {errors?.code?.message && (
+              <div
+                className="p-2 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                role="alert"
+              >
+                <span className="font-medium">Alert!</span> {errors?.email?.message}
+              </div>
+            )}
+            
+
+            <input
+                type="text"
+                {...register("email", {
+                  pattern: {
+                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                    message: "invalid email type",
+                  },
+                  required: {
+                    value: true,
+                    message: "Email is required",
+                  },
+                })}
+                placeholder="Your Email"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              />
           </div>
 
           <div>

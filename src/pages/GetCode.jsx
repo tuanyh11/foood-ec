@@ -11,7 +11,7 @@ const GetCode = () => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      code: "",
+      email: "",
     },
   });
 
@@ -21,7 +21,8 @@ const GetCode = () => {
 
   const handleOnSubmit = async (data) => {
     try {
-      const newCode = await getNewCode({ email: user?.email, id: user?._id });
+      console.log(data?.email)
+      const newCode = await getNewCode({ email: data?.email });
       alert(newCode.data?.message)
       nav("/verify_code")
     } catch (error) {
